@@ -1,0 +1,13 @@
+*{margin:0;padding:0;}
+.pic ul{list-style-type:none;}
+.pic ul li{float:left;
+    background-color: #0E2;
+    width:100px;height:300px;margin-top:10px;}
+a{text-decoration:none;}
+.txt{background-color:#000;opacity:.5;filter:Alpha(opacity=50);
+    height:100%;width:100px;}
+p{font-size:20px; color:#FF0;float:left;width:20px;padding:10px 10px;}
+.pic ul .pic2{background-color:#999;}
+.pic ul .pic3{background-color:#19F;}
+.pic ul .pic4{background-color:#FAA;}
+.pic ul .pic5{background-color:#F91;width:400px;}
