@@ -1,0 +1,16 @@
+body{margin:0;padding:0;width:100%;height:900px;}
+#keyBox{height:40px;width:100%;}
+#keyBox a{width:40px;line-height:40px;}
+#imgBox{width:100%;height:140px;display:none;
+    background-color:#FFF;position:absolute;top:0;left:0;}
+#imgTitle{height:40px;width:100%;border-bottom:1px solid #ccc;}
+/*line-height===height为垂直居中*/
+#imgTitleCon{width:900px;height:40px;margin:0 auto;line-height:40px;}
+#title1{float:left;font-size:20px;}
+#title2{float:right;font-size:20px;}
+#title1 a{display:block;width:40px;color:#fff;text-align:center;background-color:#2220ed;}
+#title2 a{display:block;width:40px;color:#fff;text-align:center;background-color:#2220ed;}
+/*权重问题*/
+#imgList{width:900px;height:65px;margin:30px auto;}
+#imgList img{width:100px;height:65px;}
+.imgItem{float:left;margin-right:5px;}
