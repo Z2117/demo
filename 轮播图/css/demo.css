@@ -1,0 +1,13 @@
+*{margin:0;padding:0}
+#igs div{position:absolute;width:900px;}
+div img{width:150px;height:600px;padding:3px;}
+.btn{background:rgba(0,0,0,.5); width:60px;height:60px;
+    color:#FFF;position:absolute;cursor:pointer;top:225px;
+    text-align:center;font-size:43px;
+    display:none;font-weight:bold;}
+.btn2{left:90px;}
+#tab{position:absolute;}
+.tabs{width:30px;height:30px;background-color:#44e;
+float:left;line-height:30px;color:#000;border-radius:100%;
+margin:4px;text-align:center;cursor:pointer;}
+.bg{background-color:red;}
