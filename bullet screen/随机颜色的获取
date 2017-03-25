@@ -1,0 +1,194 @@
+javascript获取随机颜色
+
+在制作饼图或标签云时，我们通常需要很多颜色，方法有二。一是准备一组漂亮的候选颜色，二是随机生成颜色。在数量很多或不明确时，我想后者就是唯一的出路了。谷歌了一下，整理如下，按由浅入深的顺序排列。
+
+实现1
+
+var getRandomColor = function(){
+  return  '#' +
+    (function(color){
+    return (color +=  '0123456789abcdef'[Math.floor(Math.random()*16)])
+      && (color.length == 6) ?  color : arguments.callee(color);
+  })('');
+}
+随机生成6个字符然后再串到一起，闭包调用自身与三元运算符让程序变得内敛，初心者应该好好学习这种写法。
+
+实现2
+
+var getRandomColor = function(){
+  return (function(m,s,c){
+    return (c ? arguments.callee(m,s,c-1) : '#') +
+      s[m.floor(m.random() * 16)]
+  })(Math,'0123456789abcdef',5)
+}
+把Math对象，用于生成hex颜色值的字符串提取出来，并利用第三个参数来判断是否还继续调用自身。
+
+实现3
+
+Array.prototype.map = function(fn, thisObj) {
+  var scope = thisObj || window;
+  var a = [];
+  for ( var i=0, j=this.length; i < j; ++i ) {
+    a.push(fn.call(scope, this[i], i, this));
+  }
+  return a;
+};
+var getRandomColor = function(){
+  return '#'+'0123456789abcdef'.split('').map(function(v,i,a){
+    return i>5 ? null : a[Math.floor(Math.random()*16)] }).join('');
+}
+这个要求我们对数组做些扩展，map将返回一个数组，然后我们再用join把它的元素串成字符。
+
+实现4
+
+var getRandomColor = function(){
+  return '#'+Math.floor(Math.random()*16777215).toString(16);
+}
+这个实现非常逆天，虽然有点小bug。我们知道hex颜色值是从#000000到#ffffff，后面那六位数是16进制数，相当于"0x000000"到"0xffffff"。这实现的思路是将hex的最大值ffffff先转换为10进制，进行random后再转换回16进制。我们看一下，如何得到16777215 这个数值的。
+
+
+
+<!doctype html>
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=8"/>
+<title>hex的最大值</title>
+<script type="text/javascript" charset="utf-8">
+  window.onload = function () {
+     alert(parseInt("0xffffff",16).toString(10));
+  };
+</script>
+<div id="text"></div>
+
+ 运行代码
+
+实现5
+
+var getRandomColor = function(){
+  return '#'+(Math.random()*0xffffff<<0).toString(16);
+}
+基本实现4的改进，利用左移运算符把0xffffff转化为整型。这样就不用记16777215了。由于左移运算符的优先级比不上乘号，因此随机后再左移，连Math.floor也不用了。
+
+实现6
+
+var getRandomColor = function(){
+  return '#'+(function(h){
+    return new Array(7-h.length).join("0")+h
+  })((Math.random()*0x1000000<<0).toString(16))
+}
+修正上面版本的bug（无法生成纯白色与hex位数不足问题）。0x1000000相当0xffffff+1，确保会抽选到0xffffff。在闭包里我们处理hex值不足6位的问题，直接在未位补零。
+
+实现7
+
+var getRandomColor = function(){
+  return '#'+('00000'+(Math.random()*0x1000000<<0).toString(16)).slice(-6);
+}
+这次在前面补零，连递归检测也省了。
+
+上面版本生成颜色的范围算是大而全，但随之而来的问题是颜色不好看，于是实现8搞出来了。它生成的颜色相当鲜艳。
+
+实现8
+
+var getRandomColor = function(){
+    return "hsb(" + Math.random()  + ", 1, 1)";
+ }
+实战一下：
+
+
+
+<!doctype html>
+<html dir="ltr" lang="zh-CN">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=8">
+    <title>初级饼图</title>
+    <script src="http://bloghighlighter.googlecode.com/files/raphael-min.js" type="text/javascript" ></script>
+    <script type="text/javascript" charset="utf-8">
+
+      var getRandomColor = function(){
+        return "hsb(" +[ Math.random() ,Math.random(),1] +")";
+      }
+
+      window.onload = function () {
+        var paper = Raphael("canvas", 700, 700);
+        paper.rect(0, 0, 640, 480,10).attr({fill: "#F2F1D7",stroke: "none"});//设置画板
+
+        function drawSector(cx,cy,r,paper,oc,startAngle){
+          var angleplus = 360 * oc / 100,//360度乘以40%
+          startAngle = startAngle || 0,
+          endAngle =startAngle+angleplus,
+          rad = Math.PI / 180,
+          x1 = cx + r * Math.cos(-startAngle * rad),
+          x2 = cx + r * Math.cos(-endAngle * rad),
+          y1 = cy + r * Math.sin(-startAngle * rad),
+          y2 = cy + r * Math.sin(-endAngle * rad);
+          var path = ["M", cx, cy, "L", x1, y1, "A", r, r, 0, +(endAngle - startAngle > 180), 0, x2, y2, "z"];
+          path = path.join(" ");
+          paper.path({fill:getRandomColor()},path);
+          return endAngle
+        }
+        var ocs = [40,25,17,10,8];
+        for(var i=0,l=ocs.length,startAngle;i<l;i++){
+          startAngle = drawSector(300,300,100,paper,ocs[i],startAngle);
+        }
+
+      };
+    </script>
+    <style type="text/css" media="screen">
+      #canvas {
+        width: 700px;
+        height: 700px;
+      }
+    </style>
+    <title>初级饼图</title>
+  </head>
+  <body>
+    <p>初级饼图</p>
+    <div id="canvas"></div>
+  </body>
+</html>
+******************
+
+随机颜色如何获取，在本文将为大家介绍下如何使用js来获取，感兴趣的朋友可以参考下
+
+收集一个函数：获取随机颜色值
+
+代码如下:
+function getRandomColor(){
+return "#"+("00000"+((Math.random()*16777215+0.5)>>0).toString(16)).slice(-6);
+}
+复制代码
+
+说明：
+
+1、16777215为16进制的颜色ffffff转成10进制的数字
+2、>>数字取整
+3、转成16进制不足6位的以0来补充
+
+在线演示代码：
+
+<!doctype html>
+
+<html>
+
+<head>
+
+<meta http-equiv="X-UA-Compatible" content="IE=8"/>
+
+<title>js随机颜色</title>
+
+</head>
+
+<body>
+
+<script type="text/javascript" charset="gb2312">
+
+document.writeln('#'+('00000'+(Math.random()*0x1000000<<0).toString(16)).slice(-6));选后六位
+
+</script>
+
+</body>
+
+</html>
+
+
+
