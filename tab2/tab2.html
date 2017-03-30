@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>自定义index为当前点击</title>
+	<style>
+		button{display:block;
+				width:200px;
+				height:32px;
+				font-weight:bold;
+				line-height:32px;
+				background-color:#ccc;
+				}
+		div{display:none;
+			width:200px;
+			height:200px;
+			color:red;
+			background-color:green;
+			border:1px dashed #000;
+		}
+	</style>
+	<script>
+		window.onload=function(){
+			//获取当前元素
+			var btnArr=document.getElementsByTagName("button");
+			var divArr=document.getElementsByTagName("div");
+			for(var i=0;i<btnArr.length;i++){
+				//为当前点击对象做标记
+				btnArr[i].index=i;
+				//为元素添加点击事件
+				btnArr[i].onclick=function(){
+					for(var j=0;j<btnArr.length;j++){
+						//清除样式
+						btnArr[j].style.backgroundColor="#ccc";
+						btnArr[this.index].style.backgroundColor="yellow";
+						divArr[j].style.display="none";
+						divArr[this.index].style.display="block";
+					}
+
+				}
+			}
+		};
+
+	</script>
+</head>
+<body>
+<button style="background-color:yellow;">one</button>
+<button>two</button>
+<button>three</button>
+<button>four</button>
+<div style="display:block;">one</div>
+<div>two</div>
+<div>three</div>
+<div>four</div>
+</body>
+</html>

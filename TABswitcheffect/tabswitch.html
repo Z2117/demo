@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Tab选项卡切换效果</title>
+	<style type="text/css">
+		button{width:120px;
+				height:32px;
+				line-height:32px;
+				background-color:#ccc;
+				font-size:24px;
+		}
+		div{display:none;
+			width:200px;
+			height:200px;
+			font-size:72px;
+			color:#ddd;
+			background-color:green;
+			border:1px solid black;
+		}
+	</style>
+	<script>
+		window.onload=function() {
+			//获取元素节点
+			var btnArr = document.getElementsByTagName("button");
+			var divArr = document.getElementsByTagName("div");
+			//为每一个button元素添加点击事件
+			for (var i = 0; i < btnArr.length; i++) {
+				btnArr[i].onclick = function () {
+
+					//for循环重置button元素样式
+					for (var j = 0; j < btnArr.length; j++) {
+						btnArr[j].style.backgroundColor = "#ccc";
+						//给当前点击的对象添加样式
+						this.style.backgroundColor = "yellow";
+						//隐藏所有的div
+						divArr[j].style.display = "none";
+						//找到当前点击对象的索引号
+						if (this === btnArr[j]) {
+							//显示对应的div
+							divArr[j].style.display = "block";
+						}
+					}
+				}
+			}
+		}
+	</script>
+</head>
+<body>
+	<h2>for循环+if判断当前点击与自定义数组是否匹配</h2>
+	<button style="background-color:yellow;">1</button>
+	<button>2</button>
+	<button>3</button>
+	<button>4</button>
+	<div style="display:block;">1</div>
+	<div>2</div>
+	<div>3</div>
+	<div>4</div>
+</body>
+</html>

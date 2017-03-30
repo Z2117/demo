@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>tabswitch</title>
+	<style type="text/css">
+		* {padding:0; margin:0;}
+		button {
+			background-color: #ccc;
+			width:80px;
+			height: 30px;
+		}
+		.btn-active {
+			background-color: yellow;
+			font-weight:bold;
+			font-size: 14px;
+		}
+		div{
+			width:200px;
+			height: 200px;
+			font-size: 64px;
+			background-color: #0c0;
+			display: none;
+			color:#fff;
+		}
+		.div-active {
+			display: block;
+		}
+	</style>
+	<script>
+		window.onload=function(){
+		//获取元素
+			var btnArr=document.getElementsByTagName("button");
+			var divArr=document.getElementsByTagName("div");
+			//添加点击事件
+			for(var i=0;i<btnArr.length;i++){
+				btnArr[i].index= i;
+				btnArr[i].onclick=function(){
+					for(var j=0;j<btnArr.length;j++){
+						btnArr[j].className="";
+						divArr[j].className="";
+					}
+					this.className="btn-active";
+					divArr[this.index].className="div-active";
+				}
+			}
+		};
+	</script>
+</head>
+<body>
+<button class="btn-active">按钮1</button>
+<button>按钮2</button>
+<button>按钮3</button>
+<button>按钮4</button>
+<div class="div-active">1</div>
+<div>2</div>
+<div>3</div>
+<div>4</div>
+</body>
+</html>
